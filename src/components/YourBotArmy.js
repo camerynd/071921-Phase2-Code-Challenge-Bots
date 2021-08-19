@@ -1,5 +1,5 @@
 import React from "react";
-import BotSpecs from "./BotSpecs"
+import BotCard from "./BotCard"
 
 function YourBotArmy({botsArmy}) {
   //your bot army code here...
@@ -8,7 +8,7 @@ function YourBotArmy({botsArmy}) {
     <div className="ui segment inverted olive bot-army">
       <div className="ui five column grid">
         <div className="row bot-army-row">
-          {botsArmy.map((bot) => <BotSpecs bot={bot} />)}
+          {botsArmy.map((bot) => <BotCard bot={bot} key={bot.id} />)}
           Your Bot Army
         </div>
       </div>
