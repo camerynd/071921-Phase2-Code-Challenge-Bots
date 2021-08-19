@@ -5,23 +5,40 @@ import BotCollection from "./BotCollection";
 function BotsPage() {
 
   const [bots, setBots] = useState([])
-  const [botsArmy, setBotsArmy] = useState([])
+  const [allBots, setAllBots] = useState([])
 
   useEffect(() => {
     fetch('http://localhost:8002/bots')
     .then(r => r.json())
-    .then(data => setBots(data))
+    .then(data => populate(data))
   }, [])
 
-  function populateBotArmy(bot) {
-    setBotsArmy([...botsArmy, bot])
-    console.log(botsArmy)
+  function populate(data) {
+    setBots(data)
+    setAllBots(data)
   }
+
+  function populateBotArmy(bot) {
+    const newBot = bots.map((robot) => robot.id === bot.id ? { ...robot, recruited: true} : robot)
+    setBots(newBot)
+  }
+
+  function depopulateBotArmy(bot) {
+    const removeBot = bots.map((robot) => robot.id === bot.id ? !robot : robot)
+    setBots(removeBot)
+  }
+
+  function dischargeBot(bot) {
+    const dischargeBot = bots.map((robot) => robot.id === bot.id ? !robot : robot)
+    setAllBots(dischargeBot)
+  }
+
+  const recruitedBots = bots.filter((bot) => bot.recruited)
 
   return (
     <div>
-      <YourBotArmy botsArmy={botsArmy} />
-      <BotCollection bots={bots} addBotToArmy={populateBotArmy} />
+      <YourBotArmy botsArmy={recruitedBots} removeBotFromArmy={depopulateBotArmy} goodbyeBot={dischargeBot} />
+      <BotCollection bots={allBots} addBotToArmy={populateBotArmy} goodbyeBot={dischargeBot}/>
     </div>
   )
 }
