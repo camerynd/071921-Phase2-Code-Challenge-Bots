@@ -9,14 +9,15 @@ const botTypeClasses = {
   Captain: "icon star",
 };
 
-function BotCard({ bot, addBotToArmy, removeBotFromArmy, goodbyeBot }) {
+function BotCard({ bot, handleClick, dischargeBot }) {
 
-  function handleClick() {
-    bot.recruited ? removeBotFromArmy(bot) : addBotToArmy(bot)
+  function clickHandler() {
+    handleClick(bot)
   }
 
-  function handleRemove() {
-    goodbyeBot(bot)
+  function handleRemove(e) {
+    e.stopPropagation()
+    dischargeBot(bot)
   }
 
   return (
@@ -24,8 +25,8 @@ function BotCard({ bot, addBotToArmy, removeBotFromArmy, goodbyeBot }) {
       <div
         className="ui card"
         key={bot.id}
-        onClick={handleClick}
-      >
+        onClick={clickHandler}
+        >
         <div className="image">
           <img alt="oh no!" src={bot.avatar_url} />
         </div>
